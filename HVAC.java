@@ -192,16 +192,21 @@ public class HVAC {
                 break;
 
             }
+            //added case for Water Heater service call
             case 3: {
                 System.out.println("Enter address of Water Heater Unit");
                 String address = getStringInput();
                 System.out.println("Enter description of problem");
                 String problem = getStringInput();
+                //include subclass variable
                 System.out.println("Enter year of Water Heater unit");
+                //validates input from user
                 int year = getPositiveIntInput();
-
+                //constructor call for water heater subclass
                 WaterHeater wh = new WaterHeater(address, problem, new Date(), year);
+                //add waterheater to service calls
                 todayServiceCalls.add(wh);
+                //provides output of water heater instance variables
                 System.out.println("Added the following AC unit to list of calls:\n" + wh);
                 break;
             }
