@@ -12,6 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * Give the HVAC ServiceCall application a GUI.
+ You should be able to add at least Furnace and CentralAC service calls.
+ Can you use radio buttons to indicate what type of service call you are creating?
+ Use JLists to display the service calls.
+ Be able to resolve a service call.
  * Created by Marie on 11/8/2016.
  */
 public class HVACGUI extends JFrame{
@@ -38,10 +43,12 @@ public class HVACGUI extends JFrame{
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //display current date on form
         Date date = new Date();
         DateFormat df = new SimpleDateFormat("EEE MMM dd");
         String sDate = df.format(date);
         lblDate.setText(sDate);
+        //set list modrl for jList component
         listModel = new DefaultListModel<ServiceCall>();
         //initializes jList box with list model
         scJList.setModel(listModel);
@@ -50,12 +57,13 @@ public class HVACGUI extends JFrame{
 
 
     }
-
+    //listener methods for components
     private void addListeners() {
         furnaceRadioButton.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
+                //changes enabled state to match radio button class option
                 typeComboBox.setEnabled(true);
                 txtModel.setEnabled(false);
             }
@@ -72,19 +80,21 @@ public class HVACGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (centralACRadioButton.isSelected()) {
-
+                    //creates a new instance of a central ac service call getting data from various components
                     CentralAC c = new CentralAC(txtAddress.getText(), txtDescription.getText(), new Date(), txtModel.getText());
+                    //add service call to jlist
                     listModel.addElement(c);
-                    typeComboBox.setEnabled(false);
-                    txtModel.setEnabled(false);
+                    txtAddress.setText("");
+                    txtDescription.setText("");
+                    txtModel.setText("");
                 }
                 else if (furnaceRadioButton.isSelected()){
                     Furnace f = new Furnace(txtAddress.getText(), txtDescription.getText(), new Date(), typeComboBox.getSelectedIndex());
                     listModel.addElement(f);
-                    typeComboBox.setEnabled(false);
-                    txtModel.setEnabled(false);
+
                     txtAddress.setText("");
                     txtDescription.setText("");
+                    txtModel.setText("");
                 }
             }
         });
@@ -92,29 +102,36 @@ public class HVACGUI extends JFrame{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 try {
+                    //get object form jlist and explicitly convert it to a service call object instance
                     ServiceCall selected = (ServiceCall) scJList.getSelectedValue();
+                    //provide information to user about selected item
                     lblAddress.setText(selected.getServiceAddress());
                     lblDescription.setText(selected.getProblemDescription());
                     DateFormat df = new SimpleDateFormat("EEE MMM dd");
                     String sDate = df.format(selected.getReportedDate());
                     lblDateReported.setText(sDate);
                 }
+                //clears information from resolved service call
                 catch (NullPointerException npe){
                     lblAddress.setText("");
                     lblDescription.setText("");
                     lblDateReported.setText("");
-                    txtFee.setText("");
-                    txtResolution.setText("");
+
                 }
             }
         });
         resolveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //add resolution data to service call
                 ServiceCall selected = (ServiceCall) scJList.getSelectedValue();
                 selected.setFee(Double.parseDouble(txtFee.getText()));
                 selected.setResolution(txtResolution.getText());
+                //remove service call from list
                 listModel.removeElement(selected);
+                //clears component text property
+                txtFee.setText("");
+                txtResolution.setText("");
             }
         });
     }

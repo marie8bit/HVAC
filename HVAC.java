@@ -17,7 +17,7 @@ public class HVAC {
 
 
     public static void main(String[] args) {
-
+        HVACGUI hvacGUI = new HVACGUI();
         //Use todayServiceCalls as a Queue
         //So, add new calls to the end with add()
         //Remove a resolved call from the front of the queue with remove()
@@ -25,12 +25,12 @@ public class HVAC {
 
         //This will enable us to deal with calls in the order in which they were received
 
-        todayServiceCalls = new LinkedList<ServiceCall>();
+//        todayServiceCalls = new LinkedList<ServiceCall>();
+//
+//        // This will be used to store a list of resolved service calls.
+//
+//        resolvedServiceCalls = new LinkedList<ServiceCall>();
 
-        // This will be used to store a list of resolved service calls.
-
-        resolvedServiceCalls = new LinkedList<ServiceCall>();
-        HVACGUI hvacGUI = new HVACGUI();
 
 //        scanner = new Scanner(System.in);
 //
