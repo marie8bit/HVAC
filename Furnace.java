@@ -20,21 +20,21 @@ public class Furnace extends ServiceCall {
 
     @Override
     public String toString() {
-
-        String typeString = FurnaceTypeManager.getTypeString(furnaceType);
-        String resolvedDateString = ( resolvedDate == null) ? "Unresolved" : this.resolvedDate.toString();
-        String resolutionString = ( this.resolution == null) ? "Unresolved" : this.resolution;
-        String feeString = (fee == UNRESOLVED) ? "Unresolved" : "$" + Double.toString(fee);
-
-
-        return "Furnace Service Call " + "\n" +
-                "Service Address= " + serviceAddress + "\n" +
-                "Problem Description = " + problemDescription  + "\n" +
-                "Furnace Type = " + typeString + "\n" +
-                "Reported Date = " + reportedDate + "\n" +
-                "Resolved Date = " + resolvedDateString + "\n" +
-                "Resolution = " + resolutionString + "\n" +
-                "Fee = " + feeString ;
+            return serviceAddress;
+//        String typeString = FurnaceTypeManager.getTypeString(furnaceType);
+//        String resolvedDateString = ( resolvedDate == null) ? "Unresolved" : this.resolvedDate.toString();
+//        String resolutionString = ( this.resolution == null) ? "Unresolved" : this.resolution;
+//        String feeString = (fee == UNRESOLVED) ? "Unresolved" : "$" + Double.toString(fee);
+//
+//
+//        return "Furnace Service Call " + "\n" +
+//                "Service Address= " + serviceAddress + "\n" +
+//                "Problem Description = " + problemDescription  + "\n" +
+//                "Furnace Type = " + typeString + "\n" +
+//                "Reported Date = " + reportedDate + "\n" +
+//                "Resolved Date = " + resolvedDateString + "\n" +
+//                "Resolution = " + resolutionString + "\n" +
+//                "Fee = " + feeString ;
 
     }
 

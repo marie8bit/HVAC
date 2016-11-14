@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 
 /**
  * Give the HVAC ServiceCall application a GUI.
@@ -38,9 +39,11 @@ public class HVACGUI extends JFrame{
     private JLabel lblDateReported;
     private JRadioButton furnaceRadioButton;
     private DefaultListModel<ServiceCall>listModel;
+
     protected HVACGUI(){
         setContentPane(rootPanel);
         pack();
+        setSize(800,500);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //display current date on form
@@ -53,8 +56,6 @@ public class HVACGUI extends JFrame{
         //initializes jList box with list model
         scJList.setModel(listModel);
         addListeners();
-
-
 
     }
     //listener methods for components
@@ -76,26 +77,26 @@ public class HVACGUI extends JFrame{
                 txtModel.setEnabled(true);
             }
         });
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (centralACRadioButton.isSelected()) {
-                    //creates a new instance of a central ac service call getting data from various components
-                    CentralAC c = new CentralAC(txtAddress.getText(), txtDescription.getText(), new Date(), txtModel.getText());
-                    //add service call to jlist
-                    listModel.addElement(c);
-                    txtAddress.setText("");
-                    txtDescription.setText("");
-                    txtModel.setText("");
-                }
-                else if (furnaceRadioButton.isSelected()){
-                    Furnace f = new Furnace(txtAddress.getText(), txtDescription.getText(), new Date(), typeComboBox.getSelectedIndex());
-                    listModel.addElement(f);
+                    if (centralACRadioButton.isSelected()) {
+                        //creates a new instance of a central ac service call getting data from various components
+                        CentralAC c = new CentralAC(txtAddress.getText(), txtDescription.getText(), new Date(), txtModel.getText());
+                        //add service call to jlist
+                        listModel.addElement(c);
+                        txtAddress.setText("");
+                        txtDescription.setText("");
+                        txtModel.setText("");
+                    } else if (furnaceRadioButton.isSelected()) {
+                        Furnace f = new Furnace(txtAddress.getText(), txtDescription.getText(), new Date(), typeComboBox.getSelectedIndex());
+                        listModel.addElement(f);
 
-                    txtAddress.setText("");
-                    txtDescription.setText("");
-                    txtModel.setText("");
-                }
+                        txtAddress.setText("");
+                        txtDescription.setText("");
+                        txtModel.setText("");
+                    }
             }
         });
         scJList.addListSelectionListener(new ListSelectionListener() {
@@ -123,15 +124,22 @@ public class HVACGUI extends JFrame{
         resolveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //add resolution data to service call
-                ServiceCall selected = (ServiceCall) scJList.getSelectedValue();
-                selected.setFee(Double.parseDouble(txtFee.getText()));
-                selected.setResolution(txtResolution.getText());
-                //remove service call from list
-                listModel.removeElement(selected);
-                //clears component text property
-                txtFee.setText("");
-                txtResolution.setText("");
+                try {
+                    //add resolution data to service call
+                    ServiceCall selected = (ServiceCall) scJList.getSelectedValue();
+                    selected.setFee(Double.parseDouble(txtFee.getText()));
+                    selected.setResolution(txtResolution.getText());
+                    //remove service call from list
+                    listModel.removeElement(selected);
+                    //clears component text property
+                    txtFee.setText("");
+                    txtResolution.setText("");
+                }
+                catch(NumberFormatException nfe){
+                    JOptionPane.showMessageDialog(rootPane, "Please enter a numeric value for Service Call Fee");
+                    txtFee.setText("");
+                    txtFee.requestFocus();
+                }
             }
         });
     }
